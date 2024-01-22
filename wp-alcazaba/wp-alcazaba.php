@@ -13,7 +13,7 @@
  * @package           Plugin_Name
  *
  * @wordpress-plugin
- * Plugin Name:       Gestionador de partidas
+ * Plugin Name:       Gestionador de partidas Alcazaba
  * Plugin URI:        http://alcazabadejuegos.es
  * Description:       Un plugin para gestionar partidas.
  * Version:           1.0.0
@@ -64,6 +64,8 @@ register_deactivation_hook( __FILE__, 'deactivate_plugin_name' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-alcazaba.php';
 
+require plugin_dir_path( __FILE__ ) . 'includes/Alcazaba/GameList.php';
+
 /**
  * Begins execution of the plugin.
  *
@@ -77,6 +79,5 @@ function run_plugin_name() {
 
 	$plugin = new Plugin_Name();
 	$plugin->run();
-
 }
 run_plugin_name();

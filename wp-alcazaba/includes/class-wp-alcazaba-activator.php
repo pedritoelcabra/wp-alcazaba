@@ -28,7 +28,7 @@ class Plugin_Name_Activator
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = <<<EOF
-CREATE TABLE $table_name (
+CREATE TABLE IF NOT EXISTS $table_name (
       id mediumint(9) NOT NULL AUTO_INCREMENT,
       created_on datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
       created_by bigint(20) NOT NULL,

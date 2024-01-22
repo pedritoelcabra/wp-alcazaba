@@ -100,4 +100,8 @@ class Plugin_Name_Public {
 
 	}
 
+    public function registerShortcodes(): void
+    {
+        add_shortcode('lista_partidas', ['GameList', 'listGames']);
+    }
 }

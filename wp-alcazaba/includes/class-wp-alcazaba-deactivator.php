@@ -22,11 +22,5 @@ class Plugin_Name_Deactivator
 {
     public static function deactivate()
     {
-        global $wpdb;
-
-        $table_name = $wpdb->prefix . "partidas_alcazaba";
-
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta("DROP TABLE $table_name");
     }
 }
