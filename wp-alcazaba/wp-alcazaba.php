@@ -63,8 +63,8 @@ register_deactivation_hook( __FILE__, 'deactivate_plugin_name' );
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-alcazaba.php';
-
 require plugin_dir_path( __FILE__ ) . 'includes/Alcazaba/GameList.php';
+require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 /**
  * Begins execution of the plugin.
