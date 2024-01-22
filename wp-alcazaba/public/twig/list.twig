@@ -1,1 +1,18 @@
-<h3>Test</h3>
+<h2>Partidas</h2>
+
+<table>
+    <tr>
+        <td>Nombre</td>
+        <td>Fecha</td>
+        <td>Hora</td>
+        <td>Creador</td>
+    </tr>
+    {% for game in games %}
+        <tr>
+            <td>{{ game.name }}</td>
+            <td>{{ game.startTime|date("d M") }}</td>
+            <td>{{ game.startTime|date("H:i") }}</td>
+            <td>{{ game.createdBy }}</td>
+        </tr>
+    {% endfor %}
+</table>
