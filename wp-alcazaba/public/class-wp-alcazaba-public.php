@@ -75,6 +75,7 @@ class Plugin_Name_Public {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-alcazaba-public.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'flatpickr_css', plugin_dir_url( __FILE__ ) . 'css/flatpickr.min.css', [], $this->version, 'all' );
+		wp_enqueue_style( 'jquery_ui', plugin_dir_url( __FILE__ ) . 'css/jquery-ui.min.css', [], $this->version, 'all' );
 	}
 
 	/**
@@ -99,11 +100,15 @@ class Plugin_Name_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-alcazaba-public.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'flatpickr_js', plugin_dir_url( __FILE__ ) . 'js/flatpickr.js', [], $this->version, false );
 		wp_enqueue_script( 'flatpickr_es', plugin_dir_url( __FILE__ ) . 'js/es.js', [], $this->version, false );
+		wp_enqueue_script( 'jquery_ui', plugin_dir_url( __FILE__ ) . 'js/jquery-ui.min.js', [], $this->version, false );
 	}
 
     public function registerShortcodes(): void
     {
         add_shortcode('lista_partidas', ['GameList', 'listGames']);
         add_shortcode('crear_partida', ['GameList', 'createGameForm']);
+
+        add_action('wp_ajax_search_game', ['GameList', 'ajaxListGames']);
+        add_action('wp_ajax_nopriv_search_game', ['GameList', 'ajaxListGames']);
     }
 }
