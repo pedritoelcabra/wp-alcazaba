@@ -1,0 +1,22 @@
+<h2>Crear partida</h2>
+<div class="container">
+    <div class="row">
+        <div class='col-sm-6'>
+            <div class="form-group">
+                <input class="flatpickr flatpickr-input" type="hidden" placeholder="¿Cuándo quedamos?">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    jQuery(function () {
+        flatpickr(".flatpickr", {
+            enableTime: true,
+            altInput:   true,
+            altFormat:  "l d, a \\la\\s H:i",
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true,
+            locale: 'es',
+        });
+    });
+</script>

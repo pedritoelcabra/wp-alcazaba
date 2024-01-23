@@ -4,6 +4,11 @@ use Timber\Timber;
 
 class GameList
 {
+    public static function createGameForm(): string
+    {
+        return self::fetchTemplate('create', []);
+    }
+
     public static function listGames(): string
     {
         $users = get_users();
