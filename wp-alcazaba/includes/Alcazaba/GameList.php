@@ -4,17 +4,15 @@ use Timber\Timber;
 
 class GameList
 {
-    public function __construct(
-        private GameRepository $repository
-    ) {
-    }
-
     public static function listGames(): string
     {
+        $users = get_users();
+
         return self::fetchTemplate(
             'list',
             [
-                'games' => (new GameRepository())->getAllGames(),
+                'games' => (new GameRepository())->getAllGames($users),
+                'users' => $users,
             ]
         );
     }
