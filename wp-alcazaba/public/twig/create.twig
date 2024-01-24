@@ -1,21 +1,57 @@
-<h2>Crear partida</h2>
-<div class="container">
-    <div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group text-center">
-                <input class="flatpickr flatpickr-input" type="hidden" placeholder="¿Cuándo quedamos?">
+<form class="form-row" method="post" action="/crear-partida">
+    <div class="container text-center">
+        <div class="row">
+            <div class='col-sm-12 form-group'>
+                <h2>Crear partida</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class='col-sm-12 form-group'>
+                <label for="game-name" class="control-label">Juego</label>
+                <div style="clear: both;"></div>
+                <input id="game-name" name="game-name" type="text" placeholder="¿A qué jugamos?">
+                <input id="game-id" name="game-id" type="hidden">
+            </div>
+        </div>
+        <div class="row" id="game-spinner" style="display: none">
+            <div class='col-sm-12'>
+                <img height="100" width="100" src="/wp-content/plugins/wp-alcazaba/public/image/200w.gif" alt="">
+            </div>
+        </div>
+        <div class="row" id="game-link" style="display: none">
+            <div class='col-sm-12'>
+                <a id="game-link-a" href="" target="_blank"></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class='col-sm-12 form-group'>
+                <label for="game-datetime" class="control-label">Fecha y hora</label>
+                <div style="clear: both;"></div>
+                <input name="game-datetime" id="game-datetime" class="flatpickr flatpickr-input" type="hidden"
+                       placeholder="¿Cuándo quedamos?">
+            </div>
+        </div>
+        <div class="row">
+            <div class='col-sm-12 form-group'>
+                <label for="game-players" class="control-label">Máximo de jugadores</label>
+                <div style="clear: both;"></div>
+                <input id="game-players" name="game-players" type="number" max="99" min="2">
+            </div>
+        </div>
+        <div class="row">
+            <div class='form-group col-sm-12'>
+                <label for="game-full" class="control-label">Partida cerrada (no permite a otros unirse)</label>
+                <div style="clear: both;"></div>
+                <input id="game-full" name="game-full" type="checkbox">
+            </div>
+        </div>
+        <div class="row margin-bottom-lg">
+            <div class='form-group col-sm-12'>
+                <input type="submit" value="Crear partida">
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group text-center">
-                <input id="game-name" type="text" placeholder="¿A qué jugamos?">
-                <input id="game-id" type="hidden">
-            </div>
-        </div>
-    </div>
-</div>
+</form>
 <script>
     let lastKey = -1
     jQuery(function () {
@@ -29,7 +65,7 @@
         });
 
         jQuery("#game-name").autocomplete({
-            source: function (request, response) {
+            source:    function (request, response) {
                 jQuery.post('https://alcazabadejuegos.es/wp-admin/admin-ajax.php',
                     {action: 'search_game', query: request.term},
                     function (data) {
@@ -39,10 +75,20 @@
                 );
             },
             minLength: 3,
-            delay: 1000,
-            select: function( event, ui ) {
+            delay:     1000,
+            select:    function (event, ui) {
                 jQuery("#game-id").val(ui.item.id);
-            }
+                jQuery("#game-link-a")
+                    .attr('href', ui.item.url)
+                    .html(ui.item.label + "en la BGG");
+                jQuery("#game-link").show();
+            },
+            search:    function () {
+                jQuery('#game-spinner').show();
+            },
+            response:  function () {
+                jQuery('#game-spinner').hide();
+            },
         });
     });
 </script>

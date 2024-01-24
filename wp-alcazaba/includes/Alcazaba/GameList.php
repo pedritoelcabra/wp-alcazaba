@@ -15,7 +15,11 @@ class GameList
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL,"https://boardgamegeek.com/search/boardgame?nosession=1&showcount=20&q=" . urlencode($query));
+        curl_setopt(
+            $ch,
+            CURLOPT_URL,
+            "https://boardgamegeek.com/search/boardgame?nosession=1&showcount=20&q=" . urlencode($query)
+        );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -25,7 +29,7 @@ class GameList
         $data = curl_exec($ch);
         curl_close($ch);
 
-        $decoded = json_decode($data,TRUE);
+        $decoded = json_decode($data, true);
 
         $cleanGameNames = [];
         foreach ($decoded['items'] as $item) {
@@ -33,6 +37,7 @@ class GameList
                 'id' => $item['id'],
                 'label' => sprintf('%s (%s)', $item['name'], $item['yearpublished']),
                 'value' => sprintf('%s (%s)', $item['name'], $item['yearpublished']),
+                'url' => sprintf('https://boardgamegeek.com%s', $item['href']),
             ];
         }
 
