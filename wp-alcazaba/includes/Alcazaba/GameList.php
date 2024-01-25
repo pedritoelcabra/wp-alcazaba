@@ -4,9 +4,35 @@ use Timber\Timber;
 
 class GameList
 {
+    private static function redirectIfNotLoggedIn()
+    {
+        if (wp_get_current_user()->ID === 0) {
+            wp_redirect('/area-de-socios');
+            exit;
+        }
+    }
+
     public static function createGameForm(): string
     {
-        return self::fetchTemplate('create', []);
+        self::redirectIfNotLoggedIn();
+
+        $data = ['error' => ''];
+
+        if (isset($_POST['game-id'])) {
+            try {
+                $game = Game::fromPost($_POST);
+
+                (new GameRepository())->saveGame($game);
+
+                wp_redirect('/lista-de-partidas');
+                exit;
+            } catch (Throwable $e) {
+                $data['sent'] = $_POST;
+                $data['error'] = $e->getMessage();
+            }
+        }
+
+        return self::fetchTemplate('create', $data);
     }
 
     public static function ajaxListGames(): void
@@ -47,6 +73,8 @@ class GameList
 
     public static function listGames(): string
     {
+        self::redirectIfNotLoggedIn();
+
         $users = get_users();
 
         return self::fetchTemplate(

@@ -5,12 +5,23 @@
                 <h2>Crear partida</h2>
             </div>
         </div>
+        {% if error is not empty %}
+            <div class="row">
+                <div class='col-sm-12 form-group'>
+                    <div class="alert alert-warning" role="alert">
+                        {{ error }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
             <div class='col-sm-12 form-group'>
                 <label for="game-name" class="control-label">Juego</label>
                 <div style="clear: both;"></div>
-                <input id="game-name" name="game-name" type="text" placeholder="¿A qué jugamos?">
-                <input id="game-id" name="game-id" type="hidden">
+                <input id="game-name" name="game-name" type="text" placeholder="¿A qué jugamos?"
+                    {% if sent is defined %}value="{{ sent['game-name'] }}"{% endif %}>
+                <input id="game-id" name="game-id" type="hidden"
+                   {% if sent is defined %}value="{{ sent['game-id'] }}"{% endif %}>
             </div>
         </div>
         <div class="row" id="game-spinner" style="display: none">
@@ -32,17 +43,18 @@
             </div>
         </div>
         <div class="row">
-            <div class='col-sm-12 form-group'>
-                <label for="game-players" class="control-label">Máximo de jugadores</label>
+            <div class='form-group col-sm-12'>
+                <label for="game-open" class="control-label">Permitir a otros unirse</label>
                 <div style="clear: both;"></div>
-                <input id="game-players" name="game-players" type="number" max="99" min="2">
+                <input id="game-open" name="game-open" type="checkbox" {% if sent is defined %}checked="checked"{% endif %}>
             </div>
         </div>
-        <div class="row">
-            <div class='form-group col-sm-12'>
-                <label for="game-full" class="control-label">Partida cerrada (no permite a otros unirse)</label>
+        <div class="row" id="player-number" style="display: none">
+            <div class='col-sm-12 form-group'>
+                <label for="game-players" class="control-label">Máximo de jugadores, incluido tú</label>
                 <div style="clear: both;"></div>
-                <input id="game-full" name="game-full" type="checkbox">
+                <input id="game-players" name="game-players" type="number" max="99" min="2"
+                       value="{% if sent is defined %}{{ sent['game-players'] }}{% else %}4{% endif %}">
             </div>
         </div>
         <div class="row margin-bottom-lg">
@@ -55,7 +67,7 @@
 <script>
     let lastKey = -1
     jQuery(function () {
-        flatpickr(".flatpickr", {
+        let picker = flatpickr(".flatpickr", {
             enableTime: true,
             altInput:   true,
             altFormat:  "l d, a \\la\\s H:i",
@@ -63,6 +75,30 @@
             time_24hr:  true,
             locale:     'es',
         });
+
+        {% if sent is defined %}
+        picker.setDate('{{ sent['game-datetime'] }}');
+        if (jQuery('#game-open').is(':checked')) {
+            jQuery('#player-number').show();
+        } else {
+            jQuery('#player-number').hide();
+        }
+        {% endif %}
+
+        jQuery('#game-open').on('click', function () {
+            if (jQuery('#game-open').is(':checked')) {
+                jQuery('#player-number').show();
+            } else {
+                jQuery('#player-number').hide();
+            }
+        });
+
+        if (jQuery("#game-id").val() && jQuery("#game-name").val()) {
+            jQuery("#game-link-a")
+                .attr('href', 'https://boardgamegeek.com/boardgame/' + jQuery("#game-id").val())
+                .html(jQuery("#game-name").val() + " en la BGG");
+            jQuery("#game-link").show();
+        }
 
         jQuery("#game-name").autocomplete({
             source:    function (request, response) {
@@ -80,7 +116,7 @@
                 jQuery("#game-id").val(ui.item.id);
                 jQuery("#game-link-a")
                     .attr('href', ui.item.url)
-                    .html(ui.item.label + "en la BGG");
+                    .html(ui.item.label + " en la BGG");
                 jQuery("#game-link").show();
             },
             search:    function () {
