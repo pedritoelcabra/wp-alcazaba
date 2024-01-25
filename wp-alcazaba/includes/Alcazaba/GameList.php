@@ -82,6 +82,7 @@ class GameList
             [
                 'games' => (new GameRepository())->getAllGames($users),
                 'users' => $users,
+                'current_user_id' => (int) wp_get_current_user()->ID
             ]
         );
     }

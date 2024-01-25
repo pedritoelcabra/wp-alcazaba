@@ -76,6 +76,7 @@ class Plugin_Name_Public {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-alcazaba-public.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'flatpickr_css', plugin_dir_url( __FILE__ ) . 'css/flatpickr.min.css', [], $this->version, 'all' );
 		wp_enqueue_style( 'jquery_ui', plugin_dir_url( __FILE__ ) . 'css/jquery-ui.min.css', [], $this->version, 'all' );
+		wp_enqueue_style( 'google_fonts', 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined', [], $this->version, 'all' );
 	}
 
 	/**
